@@ -1,6 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import ContextData from '../../context/MainContext';
 import MainContext from '../../context/MainContext';
+
 import { AiOutlinePlus, AiOutlineMinus } from 'react-icons/ai';
 import { MdDelete } from 'react-icons/md';
 import { BasicVegitableFruit } from '../ProductsCards/BasicVegitableFruit';
@@ -8,10 +10,11 @@ import Seo from "../Seo";
 
 
 const ProductDetails = () => {
+    const { storeProductsData, storeCategoryRelode,delivery_city,website_name} = useContext(ContextData);
+    const data = useContext(MainContext);
+    const {  addToCart, removeFromCart, cartItems } = data;
 
     const { prodID } = useParams();
-    const data = useContext(MainContext);
-    const { products, addToCart, removeFromCart, cartItems } = data;
     const [moreLikeThis, setMoreLikeThis] = useState([]);
     const [product, setProduct] = useState();
 
@@ -21,12 +24,12 @@ const ProductDetails = () => {
     }, [prodID]);
 
     useEffect(() => {
-        const more = products.filter(e => e?.category_id === product?.category_id)
+        const more = storeProductsData.filter(e => e?.category_id === product?.category_id)
         setMoreLikeThis(more);
     }, [product])
 
     useEffect(() => {
-        const getData = products.find(e => e.id === prodID);
+        const getData = storeProductsData.find(e => e.id === prodID);
         const isAvilable = cartItems.find(o => o.id === prodID);
         isAvilable ? setProduct({
             ...getData,
@@ -35,15 +38,15 @@ const ProductDetails = () => {
             ...getData,
             itemQuant: 0
         })
-    }, [products, cartItems, data, prodID]);
+    }, [storeProductsData, cartItems,  prodID]);
 
     return (
         <>
 
             <Seo
-                title={product?.product_name + " delivery in Gorakhpur | Vegetables & Fruits delivery in Gorakhpur, Grocery delivery in Gorakhpur, Chicken & Fish delivery in Gorakhpur"}
-                descreption={product?.product_name + " delivery in Gorakhpur | SuperG.in is an online vegetable, fruit, cake ,chicken, and grocery delivery website and app in Gorakhpur , Which deliver you home at very low prices. Vegetables & Fruits delivery in Gorakhpur, Grocery delivery in Gorakhpur, Chicken & Fish delivery in Gorakhpur"}
-                image={URL + "/images/product-images/" + product?.product_image}
+                title={product?.product_full_name + " delivery in Gorakhpur | Vegetables & Fruits delivery in Gorakhpur, Grocery delivery in Gorakhpur, Chicken & Fish delivery in Gorakhpur"}
+                descreption={product?.product_full_name + " delivery in Gorakhpur | SuperG.in is an online vegetable, fruit, cake ,chicken, and grocery delivery website and app in Gorakhpur , Which deliver you home at very low prices. Vegetables & Fruits delivery in Gorakhpur, Grocery delivery in Gorakhpur, Chicken & Fish delivery in Gorakhpur"}
+                image={null}
             />
 
             {console.log("about product", product)}
@@ -52,17 +55,20 @@ const ProductDetails = () => {
                     <div className="row">
                         <div className="col-lg-6">
                             <div className="d-flex mb-3">
-                                <img src={URL + "/images/product-images/" + product?.product_image} className="img-fluid mx-auto shadow-sm rounded"
-                                    alt={product?.product_name + " in Gorakhpur | SuperG.in is an online vegetable, fruit, cake ,chicken, and grocery delivery website and app in Gorakhpur , Which deliver you home at very low prices. Vegetables & Fruits delivery in Gorakhpur, Grocery delivery in Gorakhpur, Chicken & Fish delivery in Gorakhpur"}
-                                    title={product?.product_name + " delivery in Gorakhpur | Vegetables & Fruits delivery in Gorakhpur, Grocery delivery in Gorakhpur, Chicken & Fish delivery in Gorakhpur"} />
+                            {/* {product.product_image} */}
+                                <img src={product?.product_image}
+                                className="img-fluid mx-auto shadow-sm rounded"
+                                alt={product.product_full_name  + " home delivery in "+(delivery_city)+" | "+(website_name)}
+                                title={product.product_full_name  + " home delivery in "+(delivery_city)+" | "+(website_name)}
+                                  />
                             </div>
                         </div>
                         <div className="col-lg-6">
                             <div className="p-4 bg-white rounded shadow-sm">
                                 <div className="pt-0">
-                                    <h2 className="font-weight-bold">{product?.product_name} <h3>{product?.hindi_name}</h3></h2>
+                                    <h2 className="font-weight-bold">{product?.product_full_name} <h3>{product?.hindi_name}</h3></h2>
                                     <p className="font-weight-light text-dark m-0 d-flex align-items-center">
-                                        Product MRP : <b className="h6 text-dark mb-0" style={{ fontSize: 18, marginLeft: 5 }}>₹{Math.round((product?.price) - (product?.price * product?.discount / 100))} {product?.discount != 0 && <span style={{ textDecoration: "line-through", fontSize: 16 }}>({product?.price})</span>}</b>
+                                        Product MRP : <b className="h6 text-dark mb-0" style={{ fontSize: 18, marginLeft: 5 }}>₹{Math.round((product?.sale_price))} {product?.discount != 0 && <span style={{ textDecoration: "line-through", fontSize: 16 }}>({product?.price})</span>}</b>
                                         {product?.discount != "" || product?.discount != "0" && <span className="badge badge-danger ml-2">{product?.discount}%</span>}
                                     </p>
                                 </div>
@@ -103,7 +109,7 @@ const ProductDetails = () => {
                                                                 onClick={() => addToCart({
                                                                     ...product,
                                                                     itemQuant: product?.itemQuant - 1,
-                                                                    price: product?.price - product?.price,
+                                                                    price: product?.sale_price - product?.sale_price,
                                                                     cartId: product?.id
                                                                 })}
                                                             />
@@ -115,7 +121,7 @@ const ProductDetails = () => {
                                                                 addToCart({
                                                                     ...product,
                                                                     itemQuant: product?.itemQuant + 1,
-                                                                    price: parseInt(product?.price) + parseInt(product?.price),
+                                                                    price: parseInt(product?.sale_price) + parseInt(product?.sale_price),
                                                                     cartId: product?.id
                                                                 })
                                                             }
@@ -127,7 +133,7 @@ const ProductDetails = () => {
                                     </div>
                                     <div className="pt-3">
                                         <p className="font-weight-bold my-2">Product Details</p>
-                                        <p className="text-muted small mb-0">{product?.products_description}</p>
+                                        <p className="text-muted small mb-0">{product?.deceptions}</p>
                                     </div>
                                 </div>
                             </div>

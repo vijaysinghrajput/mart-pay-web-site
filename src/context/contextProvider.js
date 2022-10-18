@@ -2,6 +2,8 @@ import React, { useReducer, useState, useEffect } from "react";
 import Context from "./MainContext";
 import { reducer } from '../reducer/reducer';
 import Cookies from 'universal-cookie';
+import { Navigate } from 'react-router-dom';
+
 import URL from "../URL";
 
 
@@ -201,23 +203,32 @@ const storeBussinessRelode = () => {
         }
 
     const functionality = {
+
+        addToCart: payload => dispatch({ type: "ADD_TO_CART", payload }),
+        removeFromCart: payload => dispatch({ type: "REMOVE_FROM_CART", payload }),
+        logOut: () => {
+            cookies.remove("isUserLogin", { path: "/" });
+            cookies.remove("userID", { path: "/" });
+            cookies.remove("userProvider_id", { path: "/" });
+            cookies.remove("userName", { path: "/" });
+            cookies.remove("userMobile", { path: "/" });
+            dispatch({ type: "LOGOUT" });
+            return <Navigate to="/" />
+            // window.location.reload();
+
+        },
+        setCartDetails: payload => dispatch({ type: "CART_DETAILS", payload }),
+        removeCart: payload => dispatch({ type: "REMOVE_CART", payload }),
+        genRanHex: size => [...Array(size)].map(() => Math.floor(Math.random() * 16).toString(16)).join(''),
+        setTotalPrice: price => dispatch({ type: "TOTAL_PRICE", price }),
+
+
         fetchAllData: payload => dispatch({ type: "FETCH_ALL_DATA", payload }),
         setUserLogin: credentials => dispatch({ type: "USER_LOGIN", credentials }),
         addDataToCurrentGlobal: data => dispatch({ type: "ADD_DATA", data }),
         setGloabalLoading: data => dispatch({ type: "LOADING", data }),
         removeDataToCurrentGlobal: data => dispatch({ type: "REMOVE_DATA", data }),
         updateDataToCurrentGlobal: (data, where) => dispatch({ type: "UPDATE_DATA", data, where }),
-        logOut: () => {
-            cookies.remove("isUserLogin");
-            cookies.remove("adminId");
-            cookies.remove("adminPartnerId");
-            cookies.remove("adminEmail");
-            cookies.remove("adminMobile");
-            cookies.remove("adminRoal");
-            cookies.remove("adminStoreId");
-            cookies.remove("adminStoreType");
-            dispatch({ type: "LOGOUT" });
-        },
         reloadData,storeBrandRelode,storeCategoryRelode,storeProductRelode,storeBussinessRelode,
  
 

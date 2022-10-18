@@ -42,7 +42,7 @@ export const BasicVegitableFruit = ({ data }) => {
                             class="badge m-3 badge-danger">{data.discount_in_percent} %</span></div>}
                         <div class="p-3">
                             <Link state={location.pathname}  to={"/" +(delivery_city).replace(/\s/g, "-").toLowerCase()+"/" +(data.product_full_name + " home delivery").replace(/\s/g, "-").toLowerCase() + "/" + data.id}>
-                                <img src={data.product_image}
+                                <img src={data.product_image!=='' || data.product_image!==null?data.product_image:'https://static.vecteezy.com/system/resources/previews/004/141/669/non_2x/no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not-available-or-image-coming-soon-sign-simple-nature-silhouette-in-frame-isolated-illustration-vector.jpg'}
                                 //  style={{width:100,height:100}}
                                     class="img-fluid item-img w-100 mb-3"
                                     alt={data.product_full_name  + " home delivery in "+(delivery_city)+" | "+(website_name)}

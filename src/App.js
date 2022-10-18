@@ -50,6 +50,9 @@ class App extends Component {
       store_id: null,
       store_delivery_city_name: 'Gorakhpur',
       store_delivery_area_name: null,
+      delivery_area: '',
+      delivery_city:'',
+      website_name: "martpay.in"
     }
   }
 
@@ -80,8 +83,10 @@ class App extends Component {
     // cookies.remove("isAreaDecided");
 
     const store_id = cookies.get("adminStoreId");
+    const delivery_area= cookies.get("deliveryArea");
+    const delivery_city= cookies.get("deliveryCity");
     console.log("store_id", store_id)
-    this.setState({ store_id })
+    this.setState({ store_id,delivery_area,delivery_city })
 
     this.FetchDeliveryCity();
     this.fetchReloder()
@@ -220,34 +225,38 @@ class App extends Component {
     if (this.state.storeCategorysData.length) {
 
 
-      // alert("main show")
+  
 
       return (
 
         <>
 
+{/* <Link state={location.pathname} to={"/" +(delivery_city).replace(/\s/g, "-").toLowerCase()+"/" +(item.category_name + " home delivery").replace(/\s/g, "-").toLowerCase()  + item.master_category_id  + item.category_name}> */}
 
           <ContextProvider>
             {/* <ChakraProvider> */}
             <BrowserRouter>
               <Routes>
                 <Route path="/" element={<HomePage />} />
-                {/* <Route path="/login" element={<LoginPage />} />
-              <Route path="/choose-area" element={<ChooseAreaPage />} />
-              <Route path="/verification" element={<Verification />} />
-              <Route path="/cart" element={<CartPage />} />
-              <Route path="/category" element={<CategoryPage />} />
-              <Route path="/search" element={<SearchPage />} /> */}
-                {/* {this.state.storeCategorysData.map((item, i) => {
+                {/* <Route path='*' exact={true} element={<NotFoundPage />} /> */}
+                <Route path="/category" element={<CategoryPage />} />
+                 {this.state.storeCategorysData.map((item, i) => {
                 return (
-                  <Route path={"/" + (item.category_name + " delivery in gorakhpur").replace(/\s/g, "-").toLowerCase() + "/:subcatID/:subcatName"} element={<ProductsBySubcategoryPage />} />
+                  <Route path={"/" +(this.state.delivery_city).replace(/\s/g, "-").toLowerCase()+"/" +(item.category_name + " home delivery").replace(/\s/g, "-").toLowerCase()  + "/:subcatID/:subcatName"} element={<ProductsBySubcategoryPage />} />
                 )
               })}
               {this.state.storeProductsData.map((item, i) => {
                 return (
-                  <Route path={"/" + (item.product_full_name + " delivery in gorakhpur").replace(/\s/g, "-").toLowerCase() + "/:prodID"} element={<ProductDetailsPage />} />
+                  <Route path={"/" +(this.state.delivery_city).replace(/\s/g, "-").toLowerCase()+"/" +(item.product_full_name + " home delivery").replace(/\s/g, "-").toLowerCase() +"/:prodID"} element={<ProductDetailsPage />} />
                 )
-              })} */}
+              })} 
+                {/* <Route path="/login" element={<LoginPage />} />
+              <Route path="/choose-area" element={<ChooseAreaPage />} />
+              <Route path="/verification" element={<Verification />} />
+              <Route path="/cart" element={<CartPage />} />
+            
+              <Route path="/search" element={<SearchPage />} /> */}
+               
                 {/* USER ACCOUNT START */}
                 {/* <Route path="/orderSuccess" element={<OrderSuccessFull />} />
               <Route path="/accountApp" element={<AccountPageApp />} />
@@ -264,7 +273,7 @@ class App extends Component {
               <Route path="/shipping-policy" element={<ConditionPage />} />
               <Route path="/return-and-refund-policy" element={<ConditionPage />} />
               <Route path="/faq" element={<ConditionPage />} />
-              <Route path='*' exact={true} element={<NotFoundPage />} /> */}
+               */}
 
                 {/* USER ACCOUNT END */}
 

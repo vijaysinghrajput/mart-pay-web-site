@@ -10,33 +10,33 @@ import Seo from "../Seo";
 
 const ProductsBySubcategory = (props) => {
 
+    const { storeProductsData, storeCategoryRelode,delivery_city,website_name} = useContext(ContextData);
+
     const { subcatID, subcatName } = useParams();
-    const data = useContext(ContextData);
-    const { products } = data;
     const [isLoading, setIsLoading] = useState(true);
-    const [productsBySub, setProductsBySub] = useState([]);
+    const [storeProductsDataBySub, setstoreProductsDataBySub] = useState([]);
     const [shorting, setShorting] = useState({});
 
     useEffect(() => {
         // window.scrollTo(0, 0)
-        setProductsBySub(products.filter(p => p.category_id == subcatID));
+        setstoreProductsDataBySub(storeProductsData.filter(p => p.parent_category_id == subcatID));
         setIsLoading(false);
-    }, [products, subcatID]);
+    }, [storeProductsData, subcatID]);
 
     const setShortingByClick = (shorting) => {
-        const myProd = products.filter(p => p.category_id == subcatID);
+        const myProd = storeProductsData.filter(p => p.parent_category_id == subcatID);
         const { priceLTH, priceHTL, discount } = shorting;
-        priceLTH ? setProductsBySub(myProd.sort((a, b) => parseFloat(a.price) - parseFloat(b.price)))
-            : priceHTL ? setProductsBySub(myProd.sort((a, b) => parseFloat(b.price) - parseFloat(a.price)))
-                : discount ? setProductsBySub(myProd.sort((a, b) => parseFloat(b.discount) - parseFloat(a.discount)))
-                    : setProductsBySub(products.filter(p => p.category_id == subcatID))
+        priceLTH ? setstoreProductsDataBySub(myProd.sort((a, b) => parseFloat(a.price) - parseFloat(b.price)))
+            : priceHTL ? setstoreProductsDataBySub(myProd.sort((a, b) => parseFloat(b.price) - parseFloat(a.price)))
+                : discount ? setstoreProductsDataBySub(myProd.sort((a, b) => parseFloat(b.discount) - parseFloat(a.discount)))
+                    : setstoreProductsDataBySub(storeProductsData.filter(p => p.parent_category_id == subcatID))
     }
 
     return (
         <>
             <Seo
-                title={subcatName + " delivery in Gorakhpur | Vegetables & Fruits delivery in Gorakhpur, Grocery delivery in Gorakhpur, Chicken & Fish delivery in Gorakhpur"}
-                descreption={subcatName + " in Gorakhpur | SuperG.in is an online vegetable, fruit, cake ,chicken, and grocery delivery website and app in Gorakhpur , Which deliver you home at very low prices. Vegetables & Fruits delivery in Gorakhpur, Grocery delivery in Gorakhpur, Chicken & Fish delivery in Gorakhpur"}
+                title={subcatName + " Home Delivery in "+(delivery_city)+" | "+(website_name)}
+                descreption={subcatName + " Home Delivery in "+(delivery_city)+" | "+(website_name)+" is an online grocery delivery website and app in "+(delivery_city)}
                 image={null}
             />
 
@@ -50,7 +50,7 @@ const ProductsBySubcategory = (props) => {
                 </div>
                 <div class="row">
                     {
-                        productsBySub.map((data, i) => {
+                        storeProductsDataBySub.map((data, i) => {
                             return (
                                 <BasicVegitableFruit data={data} />
                             )
