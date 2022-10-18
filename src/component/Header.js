@@ -18,7 +18,7 @@ import contextData from '../context/MainContext';
 
 
 const Header = () => {
-  const { storeCategoryData,storeProductsData ,delivery_area} = useContext(contextData);
+  const { storeCategoryData,storeProductsData ,delivery_area,delivery_city} = useContext(contextData);
 
   const data = useContext(MainData);
   localStorage.setItem("cartItems", JSON.stringify(data.cartItems));
@@ -40,10 +40,10 @@ const Header = () => {
     cartItems.filter((data, i) => {
       const newP = storeProductsData.find(o => o.id == data.id);
       const newIndex = oldCartItem.findIndex((obj => obj.id === data.id));
-      // console.log("asdasd", newP?.price, newIndex)
+      // console.log("asdasd", newP?.sale_price, newIndex)
       if (newP) {
-        oldCartItem[newIndex]["price"] = newP?.price;
-        oldCartItem[newIndex]["discount"] = newP?.discount;
+        oldCartItem[newIndex]["sale_price"] = newP?.sale_price;
+        oldCartItem[newIndex]["discount_in_percent"] = newP?.discount_in_percent;
       }
     });
   }, [cartItems]);
@@ -88,8 +88,8 @@ const Header = () => {
   }, [storeProductsData]);
 
   const GetTotal = cartItems.reduce(function (a, b) {
-    const price = (b.price) - ((b.price) * (b.discount / 100))
-    return a + Number(price * b["itemQuant"]);
+    const sale_price = (b.sale_price)
+    return a + Number(sale_price * b["itemQuant"]);
   }, 0);
 
   return (
@@ -165,10 +165,12 @@ const Header = () => {
                 <a class="text-dark dropdown-toggle d-flex align-items-center osahan-location-drop" href="#">
                   <div><i class="icofont-location-pin d-flex align-items-center bg-light rounded-pill p-2 icofont-size border shadow-sm mr-2"></i></div>
                   <div>
-                    <p class="text-muted mb-0 small">Delivery Area</p>
-                    <p>{delivery_area}</p>
+                    <p class="text-dark mb-0 ">Delivery Area</p>
+                    <p class="text-muted mb-0 small"> {delivery_area} </p>
+                  <p class="text-muted mb-0 small">{delivery_city}  <i class="icofont-ui-edit "></i></p>
    
                   </div>
+                  
                 </a>
               </div>
               {/* <a href="#" role="button" class="toggle ml-auto"><i class="icofont-navigation-menu"></i></a> */}
@@ -207,8 +209,9 @@ const Header = () => {
               <a class="text-dark dropdown-toggle d-flex align-items-center osahan-location-drop" href="#">
                 <div><i class="icofont-location-pin d-flex align-items-center bg-light rounded-pill p-2 icofont-size border shadow-sm mr-2"></i></div>
                 <div>
-                  <p class="text-muted mb-0 small">Delivery Area</p>
-                  <p>{delivery_area}   <i class="icofont-ui-edit "></i></p>
+                  <p class="text-dark mb-0 ">Delivery Area</p>
+                  <p class="text-muted mb-0 small"> {delivery_area} </p>
+                  <p class="text-muted mb-0 small">{delivery_city}  <i class="icofont-ui-edit "></i></p>
       
                 </div>
               </a>
@@ -311,7 +314,7 @@ const Header = () => {
               </li>
             </ul>
             {/*  <div class="list-unstyled form-inline mb-0 ml-auto">
-              <a href="#" onClick={() => navigate("/offers")} class="text-white bg-offer px-3 py-2"><i class="icofont-sale-discount h6"></i>Offers</a>
+              <a href="#" onClick={() => navigate("/offers")} class="text-white bg-offer px-3 py-2"><i class="icofont-sale-discount_in_percent h6"></i>Offers</a>
             </div> */}
           </div>
         </div>

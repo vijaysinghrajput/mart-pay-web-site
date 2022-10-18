@@ -7,6 +7,7 @@ import { MdDelete } from 'react-icons/md';
 import { BsPlusLg } from 'react-icons/bs';
 
 export const BasicVegitableFruit = ({ data }) => {
+    const {delivery_city,website_name} = useContext(ContextData);
 
     const mainData = useContext(ContextData);
     const location = useLocation();
@@ -37,15 +38,15 @@ export const BasicVegitableFruit = ({ data }) => {
                 <div
                     class="list-card bg-white h-100 rounded overflow-hidden position-relative shadow-sm">
                     <div class="list-card-image">
-                        {data.discount !== "0" && <div class="member-plan position-absolute"><span
-                            class="badge m-3 badge-danger">{data.discount} %</span></div>}
+                        {data.discount_in_percent !== "0" && <div class="member-plan position-absolute"><span
+                            class="badge m-3 badge-danger">{data.discount_in_percent} %</span></div>}
                         <div class="p-3">
-                            <Link state={location.pathname} to={"/" + (data.product_full_name + " delivery in gorakhpur").replace(/\s/g, "-").toLowerCase() + "/" + data.id}>
+                            <Link state={location.pathname}  to={"/" +(delivery_city).replace(/\s/g, "-").toLowerCase()+"/" +(data.product_full_name + " home delivery").replace(/\s/g, "-").toLowerCase() + "/" + data.id}>
                                 <img src={data.product_image}
-                                 style={{width:100,height:100}}
+                                //  style={{width:100,height:100}}
                                     class="img-fluid item-img w-100 mb-3"
-                                    alt={data.product_full_name + " delivery in Gorakhpur | SuperG.in is an online vegetable, fruit, cake ,chicken, and grocery delivery website and app in Gorakhpur , Which deliver you home at very low sale_prices. Vegetables & Fruits delivery in Gorakhpur, Grocery delivery in Gorakhpur, Chicken & Fish delivery in Gorakhpur"}
-                                    title={data.product_full_name + " delivery in Gorakhpur | Vegetables & Fruits delivery in Gorakhpur, Grocery delivery in Gorakhpur, Chicken & Fish delivery in Gorakhpur"}
+                                    alt={data.product_full_name  + " home delivery in "+(delivery_city)+" | "+(website_name)}
+                                    title={data.product_full_name  + " home delivery in "+(delivery_city)+" | "+(website_name)}
 
                                 />
                                 <h6 style={{ color: "#000" }}>{data.product_full_name} </h6>
